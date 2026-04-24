@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>宝可梦属性克制交互图</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&family=Russo+One&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <header class="topbar" aria-labelledby="app-title">
+        <div>
+          <p class="kicker">Gen VI+ · 18 Types</p>
+          <h1 id="app-title">宝可梦属性克制</h1>
+        </div>
+        <p class="topbar-note">选择 1 或 2 个防御属性，倍率自动相乘。</p>
+      </header>
+
+      <section class="workspace">
+        <aside class="panel result-panel" aria-label="防御属性计算结果">
+          <div class="section-heading">
+            <p class="kicker">Defense</p>
+            <h2>当前防御属性</h2>
+          </div>
+          <div class="selected-types" id="selected-types"></div>
+          <button class="reset-button" id="reset-button" type="button">重置为单属性</button>
+          <div class="summary-grid" id="summary-grid"></div>
+        </aside>
+
+        <section class="chart-panel" aria-labelledby="chart-title">
+          <div class="section-heading chart-heading">
+            <div>
+              <p class="kicker">Attack Cards</p>
+              <h2 id="chart-title">18 种属性克制关系</h2>
+            </div>
+          </div>
+          <div class="type-card-grid" id="type-card-grid"></div>
+        </section>
+      </section>
+    </main>
+    <script src="app.js"></script>
+  </body>
+</html>
