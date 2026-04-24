@@ -43,21 +43,23 @@ const chart = {
 };
 
 const buckets = [
-  { value: 4, title: "4x 强克", tone: "danger" },
-  { value: 2, title: "2x 克制", tone: "warn" },
-  { value: 1, title: "1x 正常", tone: "neutral" },
-  { value: 0.5, title: "0.5x 抵抗", tone: "safe" },
-  { value: 0.25, title: "0.25x 双抵抗", tone: "safe" },
-  { value: 0, title: "0x 免疫", tone: "immune" },
+  { value: 4, title: "4x", tone: "danger" },
+  { value: 2, title: "2x", tone: "warn" },
+  { value: 1, title: "1x", tone: "neutral" },
+  { value: 0.5, title: "0.5x", tone: "safe" },
+  { value: 0.25, title: "0.25x", tone: "safe" },
+  { value: 0, title: "0x", tone: "immune" },
 ];
 
 let selected = ["grass"];
+let selectionMode = "single";
 
 const picker = document.querySelector("#type-picker");
 const selectedTypes = document.querySelector("#selected-types");
 const summaryGrid = document.querySelector("#summary-grid");
 const cardGrid = document.querySelector("#type-card-grid");
 const resetButton = document.querySelector("#reset-button");
+const clearButton = document.querySelector("#clear-button");
 
 function multiplier(attack, defense) {
   if (chart[attack].none.includes(defense)) return 0;
@@ -76,8 +78,10 @@ function formatType(id, className = "chip") {
 }
 
 function setSelected(typeId) {
-  if (selected.includes(typeId)) {
-    selected = selected.length === 1 ? [typeId] : selected.filter((id) => id !== typeId);
+  if (selectionMode === "single") {
+    selected = [typeId];
+  } else if (selected.includes(typeId)) {
+    selected = selected.length === 1 ? selected : selected.filter((id) => id !== typeId);
   } else if (selected.length === 2) {
     selected = [selected[1], typeId];
   } else {
@@ -106,7 +110,9 @@ function renderPicker() {
 }
 
 function renderSelected() {
-  selectedTypes.innerHTML = selected.map((id) => formatType(id, "badge")).join("");
+  selectedTypes.innerHTML = selected.length
+    ? selected.map((id) => formatType(id, "badge")).join("")
+    : '<span class="selection-empty">未选择</span>';
 }
 
 function renderSummary() {
@@ -119,9 +125,9 @@ function renderSummary() {
         : `<span class="empty">无</span>`;
       return `
         <article class="summary-card" data-tone="${bucket.tone}">
-          <div class="summary-title">
-            <span>${bucket.title}</span>
+          <div class="summary-meta">
             <small>${items.length} 项</small>
+            <small>${bucket.title}</small>
           </div>
           ${content}
         </article>
@@ -162,6 +168,7 @@ function render() {
   renderSelected();
   renderPicker();
   renderSummary();
+  resetButton.textContent = selectionMode === "single" ? "切换为双属性" : "切换为单属性";
 }
 
 if (picker) {
@@ -186,7 +193,13 @@ cardGrid.addEventListener("keydown", (event) => {
 });
 
 resetButton.addEventListener("click", () => {
-  selected = [selected[0] || "grass"];
+  selectionMode = selectionMode === "single" ? "dual" : "single";
+  if (selectionMode === "single") selected = [selected[0] || "grass"];
+  render();
+});
+
+clearButton.addEventListener("click", () => {
+  selected = [];
   render();
 });
 
